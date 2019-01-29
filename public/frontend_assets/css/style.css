@@ -3590,9 +3590,7 @@ ul.feature_list.feature_list1 {
         color: white;
         text-shadow: 0 3px 0 rgba(50,50,50, .3);
       }
-      .price-panel > .list-group {
-        font-weight: 600;
-      }
+
       .price-panel > .panel-footer {
         box-shadow: 0 3px 0 rgba(0,0,0, .3);
       }

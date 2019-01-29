@@ -24,7 +24,7 @@
     <!--<div class="navbar navbar-inverse-blue navbar-fixed-top">-->
       <div class="navbar-inner">
         <div class="container">
-           <div class="navigation">
+   <!--         <div class="navigation">
              <nav id="colorNav">
 			   <ul>
 				<li class="green">
@@ -37,8 +37,8 @@
 				</li>
 			   </ul>
              </nav>
-           </div>
-           <a class="brand" href="index-2.html"><img src="images/logo.png" alt="logo"></a>
+           </div> -->
+           <a class="brand" href="index-2.html"><img src="{{asset('public/frontend_assets/images/logo.png')}}" alt="logo"></a>
            <div class="pull-right">
           	<nav class="navbar nav_bottom" role="navigation">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -55,8 +55,10 @@
 		    <div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
 		        <ul class="nav navbar-nav nav_1">
 		            <li><a href="index-2.html">Home</a></li>
-		            <li><a href="about.html">About</a></li>
-		    		<li class="dropdown">
+		            <li><a href="about.html">Search Partner</a></li>
+		            <li><a href="about.html">Create Profile</a></li>
+		            <li><a href="about.html">Login</a></li>
+<!-- 		    		<li class="dropdown">
 		              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Matches<span class="caret"></span></a>
 		              <ul class="dropdown-menu" role="menu">
 		                <li><a href="matches.html">New Matches</a></li>
@@ -85,7 +87,7 @@
 		                <li><a href="sent.html">Sent</a></li>
 		                <li><a href="upgrade.html">Upgrade</a></li>
 		              </ul>
-		            </li>
+		            </li> -->
 		            <li class="last"><a href="contact.html">Contacts</a></li>
 		        </ul>
 		     </div><!-- /.navbar-collapse -->
@@ -379,7 +381,7 @@ We are providing the most secure, trusted and reliable platform for all the memb
     	<div class="container">
     		<div class="col-md-4 col_2">
     			<h4>About Us</h4>
-    			<p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."</p>
+    			<p>Matrimony is one of the largest & secured online Matrimonial Site in Bangladesh.We believe in providing a secure, easy to use and convenient matrimonial matchmaking experience to all of our members.</p>
     		</div>
     		<div class="col-md-2 col_2">
     			<h4>Help & Support</h4>
