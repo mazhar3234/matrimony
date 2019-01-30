@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 class FrontendController extends Controller
 {
   public function index(){
-  	return view ('frontend.master');
+  	$master_content=view('frontend.master_content');
+  	return view ('frontend.master')->with('content',$master_content);
   }
 }

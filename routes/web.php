@@ -12,3 +12,4 @@
 */
 
 Route::get('/', 'FrontendController@index');
+Route::get('register', 'UserController@register');
