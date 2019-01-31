@@ -15,6 +15,15 @@
 <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700' rel='stylesheet' type='text/css'>
 
 <link href="{{asset('public/frontend_assets/css/font-awesome.css')}}" rel="stylesheet"> 
+<style type="text/css">
+	.brand {
+		font-size: 30px;
+		color: #fff;
+	}
+	.brand:hover {
+		color: #fff;
+	}
+</style>
 <body>
 	<!-- Preloader -->
 <div id="preloader">
@@ -39,7 +48,7 @@
 			   </ul>
              </nav>
            </div> -->
-           <a class="brand" href="index-2.html"><img src="{{asset('public/frontend_assets/images/logo.png')}}" alt="logo"></a>
+           <a class="brand" href="{{URL::to('/')}}">Matrimony</a>
            <div class="pull-right">
           	<nav class="navbar nav_bottom" role="navigation">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -55,11 +64,11 @@
 		   <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
 		        <ul class="nav navbar-nav nav_1">
-		            <li><a href="index-2.html">Home</a></li>
-		            <li><a href="about.html">Search Partner</a></li>
+		            <li><a href="{{URL::to('/')}}">Home</a></li>
+		            <li><a href="{{URL::to('search-partner')}}">Search Partner</a></li>
 		            <li><a href="{{URL::to('register')}}">Register Your Profile</a></li>
-		            <li><a href="about.html">Login</a></li>
-		            <li class="last"><a href="contact.html">Contacts</a></li>
+		            <li><a href="{{URL::to('login')}}">Login</a></li>
+		            <li class="last"><a href="{{URL::to('contact-us')}}">Contact Us</a></li>
 		        </ul>
 		     </div><!-- /.navbar-collapse -->
 		    </nav>
@@ -200,7 +209,11 @@ We are providing the most secure, trusted and reliable platform for all the memb
         $('.feedback').animate({ left: tgl}, 500);
     });
 	   </script>
+<script type="text/javascript">
+    $('.alert').delay(3000).slideUp(1000);
+    $('.msg').delay(3000).slideUp(1000);
 
+</script>
 
 </body>
 </html>	

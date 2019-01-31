@@ -13,3 +13,7 @@
 
 Route::get('/', 'FrontendController@index');
 Route::get('register', 'UserController@register');
+Route::get('login', 'UserController@login');
+Route::get('contact-us', 'FrontendController@contact');
+Route::post('save-contact', 'FrontendController@save_contact');
+Route::get('search-partner', 'FrontendController@search_partner');

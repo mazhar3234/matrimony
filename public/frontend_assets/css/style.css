@@ -317,9 +317,9 @@ ul.nav_1 li.last{
 	margin-right:0;
 }
 .nav .open>a, .nav .open>a:hover, .nav .open>a:focus, .nav>li>a:hover, .nav>li>a:focus{
-    background-color:#ffa417 !important;
-    border-color:#ffa417;
-    color:#fff !important;
+/*    background-color:#ffa417 !important;
+    border-color:#ffa417;*/
+    color:#000 !important;
 }
 .banner{
 	background:url(../images/wed.jpg)no-repeat center top;
@@ -355,7 +355,7 @@ ul.nav_1 li.last{
     -webkit-transition-duration: 0.3s;
     transition-duration: 0.3s;
     padding: 12px 40px;
-    border: 2px solid #fff;
+    /*border: 2px solid #fff;*/
     color: #fff;
     font-size: 20px;
 }
@@ -3901,3 +3901,4 @@ legend { margin-bottom:15px;}
     margin-bottom: -15%;
     color: #495057;
 }
+
