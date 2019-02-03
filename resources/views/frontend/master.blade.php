@@ -11,6 +11,10 @@
 
 <!-- Custom Theme files -->
 <link href="{{asset('public/frontend_assets/css/style.css')}}" rel='stylesheet' type='text/css' />
+
+	    <!-- Include Bootstrap Datepicker -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.min.css" />
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.min.css" />
 <link href='http://fonts.googleapis.com/css?family=Oswald:300,400,700' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700' rel='stylesheet' type='text/css'>
 
@@ -165,6 +169,7 @@ We are providing the most secure, trusted and reliable platform for all the memb
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="{{asset('public/frontend_assets/js/jquery.min.js')}}"></script>
 <script src="{{asset('public/frontend_assets/js/bootstrap.min.js')}}"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
 	   <script type="text/javascript" src="{{asset('public/frontend_assets/js/jquery.flexisel.js')}}"></script>
 	    <script type="text/javascript">
 		 $(window).load(function() {
@@ -213,6 +218,24 @@ We are providing the most secure, trusted and reliable platform for all the memb
     $('.alert').delay(3000).slideUp(1000);
     $('.msg').delay(3000).slideUp(1000);
 
+</script>
+
+<script>
+    $('#datePicker')
+        .datepicker({
+            format: 'mm/dd/yyyy'
+        });
+        function checkPassword(){
+        	var pass=$("#password").val();
+        	var cpass=$("#c_password").val();
+        	if (pass != cpass) {
+        		$("#password_message").html("Password Does Not Match.");
+        		$("#register").prop('disabled',true);
+        	}else if (pass == cpass) {
+        	$("#password_message").html("");
+        	$("#register").prop('disabled',false);	
+        	}
+        }
 </script>
 
 </body>
