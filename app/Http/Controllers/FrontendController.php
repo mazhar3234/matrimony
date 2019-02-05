@@ -41,4 +41,26 @@ class FrontendController extends Controller
          return Redirect::to('contact-us')->with('error', $err_message);
       }
 	}
+    public function save_feedback(Request $request){
+             try {
+         $data=array();                                                           
+         $data['email']=$request->email;
+         $data['message']=$request->message;
+         $data['created_at']=date('Y-m-d h:i:s');
+         $result = DB::table('tbl_feedback')->insert($data);           
+         if($result){
+            return Redirect::to('/');
+         }else {
+            return Redirect::to('/');
+         }
+
+      }
+      catch (\Exception $e) {
+         $err_message = \Lang::get($e->getMessage());
+         return Redirect::to('/')->with('error', $err_message);
+      }
+  }
+  public function profile(){
+    return view ('frontend.pages.profile');
+  }
 }

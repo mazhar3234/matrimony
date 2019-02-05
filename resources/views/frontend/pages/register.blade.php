@@ -101,7 +101,7 @@ box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);*/
           </div>
           <div class="form-group col-md-6 date">
             <label>Date of Birth <sup>*</sup> </label>
-            <input name="dob" placeholder="Date of Birth" id="datePicker" class="form-control" required="required" type="text">
+            <input name="dob" placeholder="Date of Birth" autocomplete="off" id="datePicker" class="form-control" required="required" type="text">
           </div>
 
         </div>

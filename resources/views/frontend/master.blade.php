@@ -148,23 +148,23 @@ We are providing the most secure, trusted and reliable platform for all the memb
 
     <div class="feedback feedback-toggle rotate">Feedback</div>
 <div class="feedback feedback-form-wrapper">
-    <form id="feedback-form" class="form-horizontal" method="post">
+	 {!! Form::open(['url' => 'save-feedback','method'=>'post','class'=>'form-horizontal']) !!}
         <legend>Send Your Valuable Feedback to Us</legend>
 
 		<div class="form-group">
         	<label class="sr-only">Email ID</label>
-        	<input name="emailquery" id="emailquery" class="form-control" autocomplete="off" placeholder="Your Email *" required="required" type="email">
+        	<input  id="emailquery" name="email" class="form-control" autocomplete="off" placeholder="Your Email *" required="required" type="email">
         </div>
         <div class="form-group">
             <label class="sr-only">Your Feedback</label>
-            <textarea id="issue" name="issue" class="form-control" rows="3" autocomplete="off" placeholder="Write Your Issue *" required="required"></textarea>
+            <textarea id="issue" class="form-control" name="message" rows="3" autocomplete="off" placeholder="Write Your Issue *" required="required"></textarea>
         </div>
 
 		
         <div class="form-group">
 			<button type="submit" name="sendissuedetails" id="sendissuedetails" class="btn btn-default">Send Feedback</button>
         </div>
-    </form>
+      {!! Form::close() !!}
 </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="{{asset('public/frontend_assets/js/jquery.min.js')}}"></script>

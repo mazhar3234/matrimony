@@ -66,11 +66,21 @@
       <i class="fa fa-heart grey-heart"></i>
       <span class="grey-line"></span>
         </div>
+     <h4 class="msg" align="center" style="color: red">
+                        <?php
+                        $exception = Session::get('exception');
+                        if (isset($exception)) {
+                            echo $exception;
+                            Session::put('exception', '');
+                        }
+                        ?>
+                    </h4>
+         {!! Form::open(['url' => 'check-login','method'=>'post']) !!}
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Your Email *" value="" />
+                            <input type="email" class="form-control" placeholder="Your Email *" required="" name="email" />
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" placeholder="Your Password *" value="" />
+                            <input type="password" class="form-control" placeholder="Your Password *" required=""  name="password" />
                         </div>
                         <div class="form-group">
                             <input type="submit" class="btn btn-md btn-success" value="Sign In to Profile" />
@@ -79,7 +89,7 @@
 
                             <a href="#" class="btnForgetPwd" value="Login">Forget Password?</a>
                         </div>
-                    </form>
+                        {!! Form::close() !!}
                 </div>
             </div>
 
