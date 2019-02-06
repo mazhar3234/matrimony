@@ -16,6 +16,7 @@ class CreateTblReligionTable extends Migration
         Schema::create('tbl_religion', function (Blueprint $table) {
             $table->increments('religion_id');
             $table->string('religion_name');
+            $table->tinyInteger('status')->default('1');
             $table->timestamps();
         });
     }

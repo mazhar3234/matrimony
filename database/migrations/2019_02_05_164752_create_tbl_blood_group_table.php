@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTblDivisionsTable extends Migration
+class CreateTblBloodGroupTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateTblDivisionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_divisions', function (Blueprint $table) {
-            $table->increments('division_id');
-            $table->string('division_name');
+        Schema::create('tbl_blood_group', function (Blueprint $table) {
+            $table->increments('blood_group_id');
+            $table->string('blood_group');
             $table->tinyInteger('status')->default('1');
             $table->timestamps();
         });
@@ -28,6 +28,6 @@ class CreateTblDivisionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_divisions');
+        Schema::dropIfExists('tbl_blood_group');
     }
 }

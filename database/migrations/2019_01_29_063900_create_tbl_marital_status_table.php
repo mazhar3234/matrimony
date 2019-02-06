@@ -16,6 +16,7 @@ class CreateTblMaritalStatusTable extends Migration
         Schema::create('tbl_marital_status', function (Blueprint $table) {
             $table->increments('marital_status_id');
             $table->string('marital_status');
+            $table->tinyInteger('status')->default('1');
             $table->timestamps();
         });
     }

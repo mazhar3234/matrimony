@@ -78,6 +78,111 @@ if ($age < 18) {
             return Redirect::to('login');	
 	}
 }
+
+public function edit_profile($id){
+	 return view ('frontend.pages.edit_profile');
+}
+public function update_profile(Request $request){
+		 try {
+         $data=array();
+         $data['name']=$request->name;
+         $data['dob']=$request->dob;
+         $data['email']=$request->email;
+         $data['phone_number']=$request->phone;
+         $data['member_type']=$request->member_type;
+         $data['updated_at']=date('Y-m-d h:i:s');
+         $result = DB::table('users')->where('id',$request->user_id)->update($data);
+         $data2=array();
+         $data2['user_id']=$request->user_id;           
+         $data2['personal_details']=$request->personal_details;           
+         $data2['married_status']=$request->married_status;           
+         $data2['mother_tongue']=$request->mother_tongue;           
+         $data2['body_type']=$request->body_type;           
+         $data2['complexion']=$request->complexion;           
+         $data2['weight']=$request->weight;           
+         $data2['height']=$request->height;           
+         $data2['blood_group']=$request->blood_group;           
+         $data2['religion']=$request->religion;           
+         $data2['drink']=$request->drink;           
+         $data2['smoke']=$request->smoke;           
+         $data2['location']=$request->location;           
+         $data2['rassi']=$request->rassi;           
+         $data2['education']=$request->education;           
+         $data2['education_details']=$request->education_details;           
+         $data2['occupation']=$request->occupation;           
+         $data2['occupation_details']=$request->occupation_details;           
+         $data2['annual_income']=$request->annual_income;  
+          $data2['updated_at']=date('Y-m-d h:i:s');         
+$result2 = DB::table('tbl_personal_information')->where('user_id',$request->user_id)->update($data2);
+         if(($result && $result2) || ($result||$result2) ){
+            return Redirect::to('edit-profile/'.$request->user_id)->with('success','Profile Information Updated Successfully!!');
+         }else {
+            return Redirect::to('edit-profile/'.$request->user_id)->with('error','There is a error Updating Data!!');
+         }
+  
+
+      }
+      catch (\Exception $e) {
+         $err_message = \Lang::get($e->getMessage());
+         return Redirect::to('edit-profile/'.$request->user_id)->with('error', $err_message);
+      }	
+}
+public function update_family_details(Request $request){
+		 try {
+         $data2=array();
+         $data2['user_id']=$request->user_id;           
+         $data2['father_occupation']=$request->father_occupation;           
+         $data2['mother_occupation']=$request->mother_occupation;           
+         $data2['brothers']=$request->brothers;           
+         $data2['sisters']=$request->sisters;            
+          $data2['updated_at']=date('Y-m-d h:i:s');         
+$result2 = DB::table('tbl_family_details')->where('user_id',$request->user_id)->update($data2);
+         if($result2){
+            return Redirect::to('edit-profile/'.$request->user_id)->with('success','Profile Information Updated Successfully!!');
+         }else {
+            return Redirect::to('edit-profile/'.$request->user_id)->with('error','There is a error Updating Data!!');
+         }
+  
+
+      }
+      catch (\Exception $e) {
+         $err_message = \Lang::get($e->getMessage());
+         return Redirect::to('edit-profile/'.$request->user_id)->with('error', $err_message);
+      }		
+}
+
+public function update_partner_preference(Request $request){
+		 try {
+         $data2=array();
+         $data2['user_id']=$request->user_id;           
+         $data2['min_age']=$request->min_age;           
+         $data2['max_age']=$request->max_age;           
+         $data2['married_status']=$request->married_status;           
+         $data2['body_type']=$request->body_type;            
+         $data2['complexion']=$request->complexion;            
+         $data2['height']=$request->height;            
+         $data2['smoking']=$request->smoking;            
+         $data2['religion']=$request->religion;            
+         $data2['drink']=$request->drink;            
+         $data2['mother_tongue']=$request->mother_tongue;            
+         $data2['education']=$request->education;            
+         $data2['occupation']=$request->occupation;            
+         $data2['location']=$request->location;            
+          $data2['updated_at']=date('Y-m-d h:i:s');         
+$result2 = DB::table('tbl_partner_preference')->where('user_id',$request->user_id)->update($data2);
+         if($result2){
+            return Redirect::to('edit-profile/'.$request->user_id)->with('success','Profile Information Updated Successfully!!');
+         }else {
+            return Redirect::to('edit-profile/'.$request->user_id)->with('error','There is a error Updating Data!!');
+         }
+  
+
+      }
+      catch (\Exception $e) {
+         $err_message = \Lang::get($e->getMessage());
+         return Redirect::to('edit-profile/'.$request->user_id)->with('error', $err_message);
+      }		
+}
      /*--------------------- Logout ------------------*/
 
     public function logout() {
@@ -85,8 +190,8 @@ if ($age < 18) {
         Session::put('user_id', '');
         Session::put('member_type','');
         Session::put('role','');
-        Session::put('exception','Logout Successful...');  
-        return redirect('login');
+        // Session::put('exception','Logout Successful...');  
+        return redirect('/');
 
     }
 

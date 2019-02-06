@@ -16,6 +16,7 @@ class CreateTblBodyTypeTable extends Migration
         Schema::create('tbl_body_type', function (Blueprint $table) {
             $table->increments('body_type_id');
             $table->string('body_type');
+            $table->tinyInteger('status')->default('1');
             $table->timestamps();
         });
     }

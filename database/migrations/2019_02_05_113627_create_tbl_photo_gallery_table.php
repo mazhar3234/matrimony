@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTblDivisionsTable extends Migration
+class CreateTblPhotoGalleryTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateTblDivisionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_divisions', function (Blueprint $table) {
-            $table->increments('division_id');
-            $table->string('division_name');
-            $table->tinyInteger('status')->default('1');
+        Schema::create('tbl_photo_gallery', function (Blueprint $table) {
+            $table->increments('photo_id');
+            $table->integer('user_id');
+            $table->string('photo');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateTblDivisionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_divisions');
+        Schema::dropIfExists('tbl_photo_gallery');
     }
 }

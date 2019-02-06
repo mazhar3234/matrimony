@@ -16,6 +16,7 @@ class CreateTblEducationQualificationTable extends Migration
         Schema::create('tbl_education_qualification', function (Blueprint $table) {
             $table->increments('education_qualification_id');
             $table->string('education_qualification');
+            $table->tinyInteger('status')->default('1');
             $table->timestamps();
         });
     }

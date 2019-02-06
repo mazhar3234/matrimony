@@ -70,9 +70,23 @@
 		        <ul class="nav navbar-nav nav_1">
 		            <li><a href="{{URL::to('/')}}">Home</a></li>
 		            <li><a href="{{URL::to('search-partner')}}">Search Partner</a></li>
+		            <li class="last"><a href="{{URL::to('contact-us')}}">Contact Us</a></li>
+		            @if(!Session::get('user_id'))
 		            <li><a href="{{URL::to('register')}}">Register Your Profile</a></li>
 		            <li><a href="{{URL::to('login')}}">Login</a></li>
-		            <li class="last"><a href="{{URL::to('contact-us')}}">Contact Us</a></li>
+		            @else 
+		            <li class="dropdown">
+		              <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{Session::get('name')}}<span class="caret"></span></a>
+		              <ul class="dropdown-menu" role="menu">
+		                <li><a href="{{URL::to('profile')}}">My Profile</a></li>
+		                <li><a href="{{URL::to('edit-profile/'.Session::get('user_id'))}}">Edit Profile</a></li>
+		                <li><a href="{{URL::to('inbox')}}">Inbox</a></li>
+		                <li><a href="{{URL::to('sendbox')}}">Send Box</a></li>
+		                <li><a href="{{URL::to('logout')}}">Logout</a></li>
+		              </ul>
+		            </li>
+		            @endif
+		            
 		        </ul>
 		     </div><!-- /.navbar-collapse -->
 		    </nav>
@@ -215,8 +229,8 @@ We are providing the most secure, trusted and reliable platform for all the memb
     });
 	   </script>
 <script type="text/javascript">
-    $('.alert').delay(3000).slideUp(1000);
-    $('.msg').delay(3000).slideUp(1000);
+    $('.alert').delay(3000).fadeOut(1000);
+    $('.msg').delay(3000).fadeOut(1000);
 
 </script>
 
@@ -236,6 +250,63 @@ We are providing the most secure, trusted and reliable platform for all the memb
         	$("#register").prop('disabled',false);	
         	}
         }
+</script>
+<script type="text/javascript">
+	document.getElementById("files").onchange = function () {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+        // get loaded data and render thumbnail.
+        document.getElementById("image").src = e.target.result;
+    };
+
+    // read the image file as a data URL.
+    reader.readAsDataURL(this.files[0]);
+};
+	document.getElementById("files2").onchange = function () {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+        // get loaded data and render thumbnail.
+        document.getElementById("image2").src = e.target.result;
+    };
+
+    // read the image file as a data URL.
+    reader.readAsDataURL(this.files[0]);
+};
+	document.getElementById("files3").onchange = function () {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+        // get loaded data and render thumbnail.
+        document.getElementById("image3").src = e.target.result;
+    };
+
+    // read the image file as a data URL.
+    reader.readAsDataURL(this.files[0]);
+};
+	document.getElementById("files4").onchange = function () {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+        // get loaded data and render thumbnail.
+        document.getElementById("image4").src = e.target.result;
+    };
+
+    // read the image file as a data URL.
+    reader.readAsDataURL(this.files[0]);
+};
+	document.getElementById("files5").onchange = function () {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+        // get loaded data and render thumbnail.
+        document.getElementById("image5").src = e.target.result;
+    };
+
+    // read the image file as a data URL.
+    reader.readAsDataURL(this.files[0]);
+};
 </script>
 
 </body>
