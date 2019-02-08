@@ -1,13 +1,27 @@
 @extends('frontend.master')
 @section('content')
+<style type="text/css">
+.table_working_hours tr {
+	text-transform: initial;
+}
+</style>
 <?php 
 $user_info=DB::table('users')->where('id',Session::get('user_id'))->first();
+$personal_info=DB::table('tbl_personal_information')
+->join('users', 'tbl_personal_information.user_id', '=', 'users.id')
+->where('tbl_personal_information.user_id',Session::get('user_id'))
+->select('tbl_personal_information.*', 'users.*')
+->first();
+$family_info=DB::table('tbl_family_details')->where('user_id',Session::get('user_id'))->first();
+
+$partner_info=DB::table('tbl_partner_preference')->where('user_id',Session::get('user_id'))->first();
+
+$user_photo=DB::table('tbl_photo_gallery')->where('user_id',Session::get('user_id'))->get();
 
 ?>
-
 <div class="grid_3">
 	<div class="container">
-		<h3 class="text-center">{{Session::get('name')}} Profile</h3>
+		<h3 class="text-center">{{$personal_info->name}} Profile</h3>
 		<div class="heart-divider">
 			<span class="grey-line"></span>
 			<i class="fa fa-heart pink-heart"></i>
@@ -16,7 +30,7 @@ $user_info=DB::table('users')->where('id',Session::get('user_id'))->first();
 		</div>
 		<div class="profile">
 			<div class="col-md-8 profile_left">
-				<h2>Profile Id : MAT{{Session::get('user_id')}}</h2>
+				<h2>Profile Id : MAT{{$personal_info->id}}</h2>
 				<div class="col_3">
 					<div class="col-sm-4 row_2">
 						<div class="flexslider">
@@ -75,23 +89,71 @@ $user_info=DB::table('users')->where('id',Session::get('user_id'))->first();
 								</tr>
 								<tr class="opened">
 									<td class="day_label">Religion :</td>
-									<td class="day_value"> </td>
+									<td class="day_value"> 
+
+										@if($personal_info->religion)
+										<?php 
+										$religion_own=DB::table('tbl_religion')->where('religion_id',$personal_info->religion)->first();
+										echo $religion_own->religion_name;
+
+										?>
+										@else 
+										Not Specified
+										@endif
+									</td>
 								</tr>
 								<tr class="opened">
 									<td class="day_label">Marital Status :</td>
-									<td class="day_value"></td>
+									<td class="day_value">
+										@if($personal_info->married_status)
+										<?php 
+
+										$married_status_own=DB::table('tbl_marital_status')->where('marital_status_id',$personal_info->married_status)->first();
+										echo $married_status_own->marital_status;
+
+										?>
+										@else 
+										Not Specified
+										@endif
+									</td>
 								</tr>
 								<tr class="opened">
 									<td class="day_label">Location :</td>
-									<td class="day_value"></td>
+									<td class="day_value">
+										@if($personal_info->location)
+										<?php 
+										$location_own=DB::table('tbl_divisions')->where('division_id',$personal_info->location)->first();
+										echo $location_own->division_name;
+
+										?>
+										@else 
+										Not Specified
+										@endif
+									</td>
 								</tr>
 								<tr class="closed">
-									<td class="day_label">Height :</td>
-									<td class="day_value closed"><span></span></td>
+									<td class="day_label">Height (In Cm):</td>
+									<td class="day_value closed"><span>
+										@if($personal_info->height)
+										{{$personal_info->height}}
+										@else
+										Not Specified
+										@endif
+									</span></td>
 								</tr>
 								<tr class="closed">
 									<td class="day_label">Education :</td>
-									<td class="day_value closed"><span></span></td>
+									<td class="day_value closed"><span>
+										@if($personal_info->education)
+										<?php 
+										$education_own=DB::table('tbl_education_qualification')->where('education_qualification_id',$personal_info->education)->first();
+										echo $education_own->education_qualification;
+
+										?>
+										@else 
+										Not Specified
+										@endif
+									</span></td>
 								</tr>
 							</tbody>
 						</table>
@@ -116,9 +178,9 @@ $user_info=DB::table('users')->where('id',Session::get('user_id'))->first();
 						<div id="myTabContent" class="tab-content">
 							<div role="tabpanel" class="tab-pane fade in active" id="home" aria-labelledby="home-tab">
 								<div class="tab_box">
-								
-									<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor</p>
-								
+
+									<p><?php echo $personal_info->personal_details;?></p>
+
 								</div>
 								<div class="basic_1">
 									<h3>Basics & Lifestyle</h3>
@@ -127,36 +189,92 @@ $user_info=DB::table('users')->where('id',Session::get('user_id'))->first();
 											<tbody>
 												<tr class="opened_1">
 													<td class="day_label">Name :</td>
-													<td class="day_value">Lorem</td>
+													<td class="day_value">{{$personal_info->name}}</td>
 												</tr>
 												<tr class="opened">
 													<td class="day_label">Marital Status :</td>
-													<td class="day_value">Single</td>
+													<td class="day_value">
+														@if($personal_info->married_status)
+														<?php 
+
+														$married_status_own=DB::table('tbl_marital_status')->where('marital_status_id',$personal_info->married_status)->first();
+														echo $married_status_own->marital_status;
+
+														?>
+														@else 
+														Not Specified
+														@endif
+													</td>
 												</tr>
 												<tr class="opened">
 													<td class="day_label">Body Type :</td>
-													<td class="day_value">Average</td>
+													<td class="day_value">
+														@if($personal_info->body_type)
+														<?php 
+														$body_type_own=DB::table('tbl_body_type')->where('body_type_id',$personal_info->body_type)->first();
+														echo $body_type_own->body_type;
+
+														?>
+														@else 
+														Not Specified
+														@endif
+
+													</td>
 												</tr>
 												<tr class="opened">
-													<td class="day_label">Marital Status :</td>
-													<td class="day_value">Single</td>
+													<td class="day_label">Phone :</td>
+													<td class="day_value">{{$personal_info->phone_number}}</td>
 												</tr>
 												<tr class="opened">
-													<td class="day_label">Height :</td>
-													<td class="day_value">28, 5ft 5in / 163cm</td>
+													<td class="day_label">Height (In Cm):</td>
+													<td class="day_value">
+														@if($personal_info->height)
+														{{$personal_info->height}}
+														@else
+														Not Specified
+														@endif
+													</td>
 												</tr>
-													<tr class="opened">
+												<tr class="opened">
 													<td class="day_label">Date of Birth :</td>
-													<td class="day_value closed"><span>01-05-1988</span></td>
+													<td class="day_value closed"><span>
+														@if($personal_info->dob)
+														{{$personal_info->dob}}
+														@else
+														Not Specified
+														@endif
+													</span></td>
 												</tr>
-						
+
 												<tr class="opened">
 													<td class="day_label">Drink :</td>
-													<td class="day_value closed"><span>No</span></td>
+													<td class="day_value closed"><span>
+														@if($personal_info->drink==1)
+														Yes
+														@else
+														No
+														@endif
+													</span></td>
 												</tr>
-														<tr class="opened">
+												<tr class="opened">
 													<td class="day_label">Location :</td>
-													<td class="day_value">Kanya</td>
+													<td class="day_value">
+														@if($personal_info->location)
+														<?php 
+														$location_own=DB::table('tbl_divisions')->where('division_id',$personal_info->location)->first();
+														echo $location_own->division_name;
+
+														?>
+														@else 
+														Not Specified
+														@endif
+													</td>
+												</tr>
+												<tr class="opened">
+													<td class="day_label">Email :</td>
+													<td class="day_value">
+														{{$personal_info->email}}
+													</td>
 												</tr>
 											</tbody>
 										</table>
@@ -166,35 +284,119 @@ $user_info=DB::table('users')->where('id',Session::get('user_id'))->first();
 											<tbody>
 												<tr class="opened_1">
 													<td class="day_label">Age :</td>
-													<td class="day_value">28 Yrs</td>
+													<td class="day_value"><?php
+
+													$birthDate = date("Y-m-d", strtotime($personal_info->dob) );
+													$today = date("Y-m-d");
+													$diff = date_diff(date_create($birthDate), date_create($today));
+													echo $age=$diff->format('%y Year %m Month %d Day');
+													?></td>
 												</tr>
 												<tr class="opened">
 													<td class="day_label">Mother Tongue :</td>
-													<td class="day_value">Hindi</td>
+													<td class="day_value">
+														@if($personal_info->mother_tongue)
+														<?php 
+														$language_own=DB::table('tbl_language')->where('language_id',$personal_info->mother_tongue)->first();
+														echo $language_own->language;
+														?>
+														@else 
+														Not Specified
+														@endif
+														
+													</td>
 												</tr>
 												<tr class="opened">
 													<td class="day_label">Complexion :</td>
-													<td class="day_value">Fair</td>
+													<td class="day_value">
+														@if($personal_info->complexion==1)
+														Yes
+														@else 
+														No 
+														@endif
+													</td>
 												</tr>
 												<tr class="opened">
-													<td class="day_label">Weight :</td>
-													<td class="day_value">45</td>
+													<td class="day_label">Weight (In Kg):</td>
+													<td class="day_value">
+														@if($personal_info->weight) 
+														{{$personal_info->weight}}
+														@else 
+														Not Specified
+														@endif
+													</td>
 												</tr>
 												<tr class="opened">
 													<td class="day_label">Blood Group :</td>
-													<td class="day_value">B+</td>
+													<td class="day_value">
+														@if($personal_info->blood_group)
+														<?php 
+														$blood_group_own=DB::table('tbl_blood_group')->where('blood_group_id',$personal_info->blood_group)->first();
+														echo $blood_group_own->blood_group;
+
+														?>
+														@else 
+														Not Specified
+														@endif
+													</td>
 												</tr>
-													<tr class="opened_1">
+												<tr class="opened_1">
 													<td class="day_label">Religion :</td>
-													<td class="day_value">Hindu</td>
+													<td class="day_value">
+														@if($personal_info->religion)
+														<?php 
+														$religion_own=DB::table('tbl_religion')->where('religion_id',$personal_info->religion)->first();
+														echo $religion_own->religion_name;
+
+														?>
+														@else 
+														Not Specified
+														@endif
+													</td>
 												</tr>
 												<tr class="closed">
 													<td class="day_label">Smoke :</td>
-													<td class="day_value closed"><span>No</span></td>
+													<td class="day_value closed"><span>
+														@if($personal_info->smoke=='1')
+														Yes 
+														@else 
+														No
+														@endif
+													</span></td>
 												</tr>
-														<tr class="opened">
+												<tr class="opened">
 													<td class="day_label">Raasi :</td>
-													<td class="day_value">Kanya</td>
+													<td class="day_value">
+														@if($personal_info->rassi)
+														<?php 
+														$rassi_own=DB::table('tbl_rassi')->where('rassi_id',$personal_info->rassi)->first();
+														echo $personal_info->rassi;
+
+														?>
+														@else 
+														Not Specified
+														@endif
+													</td>
+												</tr>
+												<tr class="opened">
+													<td class="day_label">Membership :</td>
+													<td class="day_value">
+														
+														@if($personal_info->member_type=='1')
+														Free
+
+														@elseif ($personal_info->member_type=='2')
+														Starter
+														
+														@elseif ($personal_info->member_type=='3')
+														Standard
+
+														@elseif ($personal_info->member_type=='4')
+														Pro
+
+														@endif
+														
+													</td>
 												</tr>
 											</tbody>
 										</table>
@@ -203,28 +405,67 @@ $user_info=DB::table('users')->where('id',Session::get('user_id'))->first();
 								</div>
 								<div class="basic_1 basic_2">
 									<h3>Education & Career</h3>
-									<div class="basic_1-left">
+									<div class="col-md-6 basic_1-left">
 										<table class="table_working_hours">
 											<tbody>
 												<tr class="opened">
 													<td class="day_label">Education   :</td>
-													<td class="day_value">Engineering</td>
+													<td class="day_value">
+														@if($personal_info->education)
+														<?php 
+														$education_own=DB::table('tbl_education_qualification')->where('education_qualification_id',$personal_info->education)->first();
+														echo $education_own->education_qualification;
+
+														?>
+														@else 
+														Not Specified
+														@endif
+													</td>
 												</tr>
 												<tr class="opened">
 													<td class="day_label">Education Detail :</td>
-													<td class="day_value">Software Engineer</td>
+													<td class="day_value">
+														@if($personal_info->education_details)
+														{{$personal_info->education_details}}
+														@else 
+														Not Specified
+														@endif
+													</td>
 												</tr>
 												<tr class="opened">
 													<td class="day_label">Occupation   :</td>
-													<td class="day_value">Engineering</td>
+													<td class="day_value">
+														@if($personal_info->occupation)
+														<?php 
+														$occupation_own=DB::table('tbl_occupation')->where('occupation_id',$personal_info->occupation)->first();
+														echo $occupation_own->occupation;
+
+														?>
+														@else 
+														Not Specified
+														@endif
+													</td>
 												</tr>
 												<tr class="opened">
 													<td class="day_label">Occupation Detail :</td>
-													<td class="day_value closed"><span>There are many variations of passages of Lorem Ipsum available</span></td>
+													<td class="day_value closed"><span>
+														@if($personal_info->occupation_details)
+														{{$personal_info->occupation_details}}
+														@else 
+														Not Specified
+														@endif
+													</span></td>
 												</tr>
 												<tr class="opened">
 													<td class="day_label">Annual Income :</td>
-													<td class="day_value closed"><span>Rs.5,00,000 - 6,00,000</span></td>
+													<td class="day_value closed"><span>
+
+														@if($personal_info->annual_income) 
+														BDT. {{$personal_info->annual_income}}
+														@else 
+														Not Specified
+														@endif
+													</span></td>
 												</tr>
 											</tbody>
 										</table>
@@ -242,19 +483,42 @@ $user_info=DB::table('users')->where('id',Session::get('user_id'))->first();
 												<tbody>
 													<tr class="opened">
 														<td class="day_label">Father's Occupation :</td>
-														<td class="day_value">Not Specified</td>
+														<td class="day_value">
+															@if($family_info->father_occupation)
+															{{$family_info->father_occupation}}
+															@else 
+															Not Specified
+															@endif
+														</td>
 													</tr>
 													<tr class="opened">
 														<td class="day_label">Mother's Occupation :</td>
-														<td class="day_value">Not Specified</td>
+														<td class="day_value">
+															@if($family_info->mother_occupation)
+															{{$family_info->mother_occupation}}
+															@else 
+															Not Specified
+														@endif</td>
 													</tr>
 													<tr class="opened">
 														<td class="day_label">No. of Brothers :</td>
-														<td class="day_value closed"><span>Not Specified</span></td>
+														<td class="day_value closed"><span>
+															@if($family_info->brothers)
+															{{$family_info->brothers}}
+															@else 
+															Not Specified
+															@endif
+														</span></td>
 													</tr>
 													<tr class="opened">
 														<td class="day_label">No. of Sisters :</td>
-														<td class="day_value closed"><span>Not Specified</span></td>
+														<td class="day_value closed"><span>
+															@if($family_info->sisters)
+															{{$family_info->sisters}}
+															@else 
+															Not Specified
+															@endif
+														</span></td>
 													</tr>
 												</tbody>
 											</table>
@@ -269,64 +533,147 @@ $user_info=DB::table('users')->where('id',Session::get('user_id'))->first();
 											<tbody>
 												<tr class="opened">
 													<td class="day_label">Age   :</td>
-													<td class="day_value">28 to 35</td>
+													<td class="day_value">@if($partner_info->min_age){{$partner_info->min_age}}@else Not Specified @endif to @if($partner_info->max_age){{$partner_info->max_age}}@else Not Specified @endif</td>
 												</tr>
 												<tr class="opened">
 													<td class="day_label">Marital Status :</td>
-													<td class="day_value">Single</td>
+													<td class="day_value">
+														@if($partner_info->married_status)
+														<?php 
+														$married_status_own=DB::table('tbl_marital_status')->where('marital_status_id',$personal_info->married_status)->first();
+														echo $married_status_own->marital_status;
+
+														?>
+														@else Doesn't Matter @endif
+													</td>
 												</tr>
 												<tr class="opened">
 													<td class="day_label">Body Type :</td>
-													<td class="day_value closed"><span>Doesn't matter</span></td>
+													<td class="day_value closed"><span>
+														@if($partner_info->body_type)
+														<?php 
+														$body_type_own=DB::table('tbl_body_type')->where('body_type_id',$partner_info->body_type)->first();
+														echo $body_type_own->body_type;
+
+														?>
+														@else 
+														Doesn't Matter
+														@endif
+													</span></td>
 												</tr>
 												<tr class="opened">
 													<td class="day_label">Complexion :</td>
-													<td class="day_value closed"><span>Doesn't matter</span></td>
+													<td class="day_value closed"><span>
+
+														@if($partner_info->complexion==1)
+														Yes
+														@else 
+														No 
+														@endif
+													</span></td>
 												</tr>
 												<tr class="opened">
-													<td class="day_label">Height 5ft 9 in / 175cm :</td>
-													<td class="day_value closed"><span>Doesn't matter</span></td>
+													<td class="day_label">Height (In Cm) :</td>
+													<td class="day_value closed"><span>
+														@if($partner_info->height)
+														{{$partner_info->height}}
+														@else
+														Doesn't Matter
+														@endif
+													</span></td>
 												</tr>
+
 												<tr class="opened">
-													<td class="day_label">Diet :</td>
-													<td class="day_value closed"><span>Doesn't matter</span></td>
-												</tr>
-												<tr class="opened">
-													<td class="day_label">Kujadosham / Manglik :</td>
-													<td class="day_value closed"><span>No</span></td>
+													<td class="day_label">Smoking :</td>
+													<td class="day_value closed"><span>
+														@if($partner_info->smoking=='1')
+														Yes 
+														@else 
+														No
+														@endif
+													</span></td>
 												</tr>
 												<tr class="opened">
 													<td class="day_label">Religion :</td>
-													<td class="day_value closed"><span>Doesn't matter</span></td>
+													<td class="day_value closed"><span>
+														
+														@if($partner_info->religion)
+														<?php 
+														$religion_own=DB::table('tbl_religion')->where('religion_id',$personal_info->religion)->first();
+														echo $religion_own->religion_name;
+
+														?>
+														@else 
+														Doesn't Matter
+														@endif
+													</span></td>
 												</tr>
 												<tr class="opened">
-													<td class="day_label">Caste :</td>
-													<td class="day_value closed"><span>Doesn't matter</span></td>
+													<td class="day_label">Drink :</td>
+													<td class="day_value closed"><span>
+														@if($partner_info->drink==1)
+														Yes
+														@else
+														No
+														@endif
+													</span></td>
 												</tr>
 												<tr class="opened">
 													<td class="day_label">Mother Tongue :</td>
-													<td class="day_value closed"><span>Doesn't matter</span></td>
+													<td class="day_value closed"><span>
+														@if($partner_info->mother_tongue)
+														<?php 
+														$language_own=DB::table('tbl_language')->where('language_id',$personal_info->mother_tongue)->first();
+														echo $language_own->language;
+														?>
+														@else 
+														Doesn't Matter
+														@endif
+													</span></td>
 												</tr>
 												<tr class="opened">
 													<td class="day_label">Education :</td>
-													<td class="day_value closed"><span>Doesn't matter</span></td>
+													<td class="day_value closed"><span>
+														@if($partner_info->education)
+														<?php 
+														$education_own=DB::table('tbl_education_qualification')->where('education_qualification_id',$personal_info->education)->first();
+														echo $education_own->education_qualification;
+
+														?>
+														@else 
+														Doesn't Matter
+														@endif
+													</span></td>
 												</tr>
 												<tr class="opened">
 													<td class="day_label">Occupation :</td>
-													<td class="day_value closed"><span>Doesn't matter</span></td>
+													<td class="day_value closed"><span>
+														@if($partner_info->occupation)
+														<?php 
+														$occupation_own=DB::table('tbl_occupation')->where('occupation_id',$personal_info->occupation)->first();
+														echo $occupation_own->occupation;
+
+														?>
+														@else 
+														Doesn't Matter
+														@endif
+													</span></td>
 												</tr>
 												<tr class="opened">
-													<td class="day_label">Country of Residence :</td>
-													<td class="day_value closed"><span>Doesn't matter</span></td>
+													<td class="day_label">Location :</td>
+													<td class="day_value closed"><span>
+														@if($partner_info->location)
+														<?php 
+														$location_own=DB::table('tbl_divisions')->where('division_id',$personal_info->location)->first();
+														echo $location_own->division_name;
+
+														?>
+														@else 
+														Doesn't Matter
+														@endif
+													</span></td>
 												</tr>
-												<tr class="opened">
-													<td class="day_label">State :</td>
-													<td class="day_value closed"><span>Doesn't matter</span></td>
-												</tr>
-												<tr class="opened">
-													<td class="day_label">Residency Status :</td>
-													<td class="day_value closed"><span>Doesn't matter</span></td>
-												</tr>
+
 											</tbody>
 										</table>
 									</div>
@@ -344,115 +691,34 @@ $user_info=DB::table('users')->where('id',Session::get('user_id'))->first();
 					</form>
 				</div>
 				<div class="view_profile">
-					<h3>View Similar Profiles</h3>
+					<h3>Recent Created Profile</h3>
+					@foreach($recent_user as $ru)
 					<ul class="profile_item">
 						<a href="#">
 							<li class="profile_item-img">
 								<img src="images/p5.jpg" class="img-responsive" alt=""/>
 							</li>
 							<li class="profile_item-desc">
-								<h4>2458741</h4>
-								<p>29 Yrs, 5Ft 5in Christian</p>
-								<h5>View Full Profile</h5>
+								<h4>MAT{{$ru->id}}</h4>
+								<p>
+									<?php
+
+													$birthDate = date("Y-m-d", strtotime($ru->dob) );
+													$today = date("Y-m-d");
+													$diff = date_diff(date_create($birthDate), date_create($today));
+													echo $age=$diff->format('%y Year');
+													?>
+								</p>
+								<a href="{{URL::to('profile/'.$ru->id)}}">View Full Profile</a>
+								<!-- <h5>View Full Profile</h5> -->
 							</li>
 							<div class="clearfix"> </div>
 						</a>
 					</ul>
-					<ul class="profile_item">
-						<a href="#">
-							<li class="profile_item-img">
-								<img src="images/p6.jpg" class="img-responsive" alt=""/>
-							</li>
-							<li class="profile_item-desc">
-								<h4>2458741</h4>
-								<p>29 Yrs, 5Ft 5in Christian</p>
-								<h5>View Full Profile</h5>
-							</li>
-							<div class="clearfix"> </div>
-						</a>
-					</ul>
-					<ul class="profile_item">
-						<a href="#">
-							<li class="profile_item-img">
-								<img src="images/p7.jpg" class="img-responsive" alt=""/>
-							</li>
-							<li class="profile_item-desc">
-								<h4>2458741</h4>
-								<p>29 Yrs, 5Ft 5in Christian</p>
-								<h5>View Full Profile</h5>
-							</li>
-							<div class="clearfix"> </div>
-						</a>
-					</ul>
-					<ul class="profile_item">
-						<a href="#">
-							<li class="profile_item-img">
-								<img src="images/p8.jpg" class="img-responsive" alt=""/>
-							</li>
-							<li class="profile_item-desc">
-								<h4>2458741</h4>
-								<p>29 Yrs, 5Ft 5in Christian</p>
-								<h5>View Full Profile</h5>
-							</li>
-							<div class="clearfix"> </div>
-						</a>
-					</ul>
+					@endforeach
+
 				</div>
-				<div class="view_profile view_profile1">
-					<h3>Members who viewed this profile also viewed</h3>
-					<ul class="profile_item">
-						<a href="#">
-							<li class="profile_item-img">
-								<img src="images/p9.jpg" class="img-responsive" alt=""/>
-							</li>
-							<li class="profile_item-desc">
-								<h4>2458741</h4>
-								<p>29 Yrs, 5Ft 5in Christian</p>
-								<h5>View Full Profile</h5>
-							</li>
-							<div class="clearfix"> </div>
-						</a>
-					</ul>
-					<ul class="profile_item">
-						<a href="#">
-							<li class="profile_item-img">
-								<img src="images/p10.jpg" class="img-responsive" alt=""/>
-							</li>
-							<li class="profile_item-desc">
-								<h4>2458741</h4>
-								<p>29 Yrs, 5Ft 5in Christian</p>
-								<h5>View Full Profile</h5>
-							</li>
-							<div class="clearfix"> </div>
-						</a>
-					</ul>
-					<ul class="profile_item">
-						<a href="#">
-							<li class="profile_item-img">
-								<img src="images/p11.jpg" class="img-responsive" alt=""/>
-							</li>
-							<li class="profile_item-desc">
-								<h4>2458741</h4>
-								<p>29 Yrs, 5Ft 5in Christian</p>
-								<h5>View Full Profile</h5>
-							</li>
-							<div class="clearfix"> </div>
-						</a>
-					</ul>
-					<ul class="profile_item">
-						<a href="#">
-							<li class="profile_item-img">
-								<img src="images/p12.jpg" class="img-responsive" alt=""/>
-							</li>
-							<li class="profile_item-desc">
-								<h4>2458741</h4>
-								<p>29 Yrs, 5Ft 5in Christian</p>
-								<h5>View Full Profile</h5>
-							</li>
-							<div class="clearfix"> </div>
-						</a>
-					</ul>
-				</div>
+
 			</div>
 			<div class="clearfix"> </div>
 		</div>

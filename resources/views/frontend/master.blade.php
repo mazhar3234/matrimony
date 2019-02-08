@@ -252,12 +252,13 @@ We are providing the most secure, trusted and reliable platform for all the memb
         }
 </script>
 <script type="text/javascript">
-	document.getElementById("files").onchange = function () {
+	document.getElementById("files1").onchange = function () {
     var reader = new FileReader();
 
     reader.onload = function (e) {
+
         // get loaded data and render thumbnail.
-        document.getElementById("image").src = e.target.result;
+        document.getElementById("image1").src = e.target.result;
     };
 
     // read the image file as a data URL.

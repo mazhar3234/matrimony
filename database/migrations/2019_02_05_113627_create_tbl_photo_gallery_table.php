@@ -16,7 +16,7 @@ class CreateTblPhotoGalleryTable extends Migration
         Schema::create('tbl_photo_gallery', function (Blueprint $table) {
             $table->increments('photo_id');
             $table->integer('user_id');
-            $table->string('photo');
+            $table->string('photo')->nullable();
             $table->timestamps();
         });
     }

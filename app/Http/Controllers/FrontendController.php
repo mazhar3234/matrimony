@@ -61,7 +61,11 @@ class FrontendController extends Controller
       }
   }
   public function profile(){
-    
-    return view ('frontend.pages.profile');
+
+    $recent_user=$personal_info=DB::table('tbl_personal_information')
+->join('users', 'tbl_personal_information.user_id', '=', 'users.id')
+->select('tbl_personal_information.*', 'users.*')
+->get();
+    return view ('frontend.pages.profile')->with('recent_user',$recent_user);
   }
 }

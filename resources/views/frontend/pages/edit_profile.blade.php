@@ -42,6 +42,8 @@ $family_info=DB::table('tbl_family_details')->where('user_id',Session::get('user
 
 $partner_info=DB::table('tbl_partner_preference')->where('user_id',Session::get('user_id'))->first();
 
+$user_photo=DB::table('tbl_photo_gallery')->where('user_id',Session::get('user_id'))->get();
+
 $married_status=DB::table('tbl_marital_status')->where('status',1)->get();
 $married_status_c=DB::table('tbl_marital_status')->where('status',1)->where('marital_status_id','!=',$personal_info->married_status)->get();
 
@@ -883,27 +885,27 @@ $occupation_c=DB::table('tbl_occupation')->where('status',1)->where('occupation_
 								</div>
 							</div>
 							<div role="tabpanel" class="tab-pane fade" id="profile2" aria-labelledby="profile-tab2">
-								{!! Form::open(['url' => 'update-photo','method'=>'post']) !!}
+								{!! Form::open(['url' => 'update-photo','method'=>'post','enctype'=> 'multipart/form-data']) !!}
+								<input type="hidden" value="{{Session::get('user_id')}}" name="user_id">
+								<?php $l=1;$m=1;$n=1;
+								?>
+								@foreach($user_photo as $up)
 								<div class="col-md-4">
-									<img style="width: 200px;height: 200px;display: block;margin: 10px auto;" id="image" />
-								<input type="file" id="files" />
+									@if(!$up->photo)
+									<img style="width: 200px;height: 200px;display: block;margin: 10px auto;" src="{{asset('public/frontend_assets/images/photo.png')}}" id="image{{$l++}}" />
+									
+									@else 
+									<img style="width: 200px;height: 200px;display: block;margin: 10px auto;" src="{{asset('public/user/'.$up->photo)}}" id="image{{$l++}}" />
+									@endif
+
+								<input type="file" name="photo{{$n++}}" id="files{{$m++}}" />
 								</div>
-								<div class="col-md-4">
-									<img style="width: 200px;height: 200px;display: block;margin: 10px auto;" id="image2" />
-								<input type="file" id="files2" />
+								@endforeach
+								<div style="margin-top: 30px;" class="col-md-4">
+									
+								<input type="submit" value="Update Photo Gallery" class="btn btn-md btn-success" name="">
 								</div>
-								<div class="col-md-4">
-									<img style="width: 200px;height: 200px;display: block;margin: 10px auto;" id="image3" />
-								<input type="file" id="files3" />
-								</div>
-								<div class="col-md-4">
-									<img style="width: 200px;height: 200px;display: block;margin: 10px auto;" id="image4" />
-								<input type="file" id="files4" />
-								</div>
-								<div class="col-md-4">
-									<img style="width: 200px;height: 200px;display: block;margin: 10px auto;" id="image5" />
-								<input type="file" id="files5" />
-								</div>
+
 
 {!! Form::close() !!}
 							</div>
