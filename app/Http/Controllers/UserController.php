@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use Redirect;
 use Session;
+use Illuminate\Support\Facades\Input;
 
 class UserController extends Controller
 {
@@ -80,7 +81,13 @@ class UserController extends Controller
 	}
 
 	public function edit_profile($id){
-		return view ('frontend.pages.edit_profile');
+		    $recent_user=$personal_info=DB::table('tbl_personal_information')
+->join('users', 'tbl_personal_information.user_id', '=', 'users.id')
+->select('tbl_personal_information.*', 'users.*')
+->orderBy('users.id', 'desc')
+->take(10)
+->get();
+		return view ('frontend.pages.edit_profile')->with('recent_user',$recent_user);
 	}
 	public function update_profile(Request $request){
 		try {
@@ -185,54 +192,76 @@ class UserController extends Controller
 	}
 
 	public function update_photo(Request $request){
-		$cc= count($request->all());
-		$loop_count= $cc-2;
-		try {
-			$data=array();
-			$delete_result = DB::table('tbl_photo_gallery')->where('user_id',$request->user_id)->delete();
 
-			for ($i=1; $i <= $loop_count; $i++) { 
-				$data['user_id']=$request->user_id;
-				$data['created_at']=date('Y-m-d h:i:s');
-				           //------------- Start Image Upload Section -------------- //
-				$image = $request->file('photo'.$i);
-				if($image){
-					$file_size   = $image->getClientSize();
-					$name        = str_random(20);
-					$extension   = $image->getClientOriginalExtension();
-					$image_name  = $name.'.'.$extension;
-					$upload_path = 'public/user/';
-                //-------- Check image format ----------//
-					if($extension == 'jpg' || $extension == 'png' || $extension == 'jpeg'){
+
+$image_count=count($request->file('user_image'));
+$user_image=$request->file('user_image');
+ for ($i=0; $i <= $image_count-1 ; $i++) { 
+          $file_size   =$user_image[$i]->getClientSize();
+        $name        = str_random(20);
+        $extension   = $user_image[$i]->getClientOriginalExtension();
+        $image_name  = $name.'.'.$extension;
+        $upload_path = 'public/user/';
+        //-------- Check image format ----------//
+        if ($extension == 'jpg' || $extension == 'png' || $extension == 'jpeg' || $extension == 'JPEG'|| $extension == 'PNG'){
                     //------ Check file size --------//
-						if($file_size < 51200000){
-							$success = $image->move($upload_path,$image_name);
-							$data['photo'] = $image_name;
-							$result = DB::table('tbl_photo_gallery')->insert($data);
-						}else{
-							exit;
-							return Redirect::to('edit-profile/'.$request->user_id)->with('error', 'Photo'. $i .'Maximum file size is 50MB');
-						}
-					}else{
-						return Redirect::to('edit-profile/'.$request->user_id)->with('error','Photo'. $i .'File type not supported...!');
-					}
-				}else{
-					return Redirect::to('edit-profile/'.$request->user_id)->with('error','There is no photo to update !!!');
-				}
-            //------------- End Image Upload Section -------------- //
-			}
+          if($file_size < 50000000){
+         $success = $user_image[$i]->move($upload_path,$image_name);
+          $data2['photo']=$image_name;
+          $data2['user_id'] = $request->user_id;
+        $data2['created_at']=date('Y-m-d h:i:s'); 
+        $result=  DB::table('tbl_photo_gallery')->insert($data2);
+          }else{
+            return Redirect::to('edit-profile/'.$request->user_id)->with('error', 'User Image Maximum file size is 50MB');
+          }
+        }else{
+          return Redirect::to('edit-profile/'.$request->user_id)->with('error','User Image File type not supported...!');
+        }
 
-			if($result){
-				return Redirect::to('edit-profile/'.$request->user_id)->with('success','Photo Gallery Added Successfully..');
+
+ }
+	if($result){
+				return Redirect::to('edit-profile/'.$request->user_id)->with('success','Profile Photo Updated Successfully!!');
 			}else {
 				return Redirect::to('edit-profile/'.$request->user_id)->with('error','There is a error Updating Data!!');
 			}
+	}
 
-		}
-		catch (\Exception $e) {
-			$err_message = \Lang::get($e->getMessage());
-			return Redirect::to('edit-profile/'.$request->user_id)->with('error', $err_message);
-		}
+	public function profileById($id){
+		    $recent_user=DB::table('tbl_personal_information')
+->join('users', 'tbl_personal_information.user_id', '=', 'users.id')
+->select('tbl_personal_information.*', 'users.*')
+->orderBy('users.id', 'desc')
+->take(10)
+->get();
+$user_info=DB::table('users')->where('id',$id)->first();
+$personal_info=DB::table('tbl_personal_information')
+->join('users', 'tbl_personal_information.user_id', '=', 'users.id')
+->where('tbl_personal_information.user_id',$id)
+->select('tbl_personal_information.*', 'users.*')
+->first();
+$family_info=DB::table('tbl_family_details')->where('user_id',$id)->first();
+
+$partner_info=DB::table('tbl_partner_preference')->where('user_id',$id)->first();
+
+$user_photo=DB::table('tbl_photo_gallery')->where('user_id',$id)->get();
+		return view ('frontend.pages.individual_profile')
+			->with('recent_user',$recent_user)
+			->with('user_info',$user_info)
+			->with('personal_info',$personal_info)
+			->with('family_info',$family_info)
+			->with('partner_info',$partner_info)
+			->with('user_photo',$user_photo);
+	}
+
+	public function delete_user_image(){
+       $id = Input::get('id');
+          $user_id = Input::get('user_id');
+         $value=DB::table('tbl_photo_gallery')->where('photo_id',$id)->first();
+          unlink('public/user/'.$value->photo);
+        $userimages=DB::table('tbl_photo_gallery')->where('photo_id',$id)->delete();
+        $result=DB::table('tbl_photo_gallery')->where('user_id',$user_id)->get();
+        return view('frontend.pages.new_result')->with('result',$result);
 	}
 	/*--------------------- Logout ------------------*/
 

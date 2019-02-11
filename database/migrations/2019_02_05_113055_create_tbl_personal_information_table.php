@@ -22,6 +22,7 @@ class CreateTblPersonalInformationTable extends Migration
             $table->tinyInteger('body_type')->nullable();
             $table->tinyInteger('complexion')->nullable();
             $table->string('weight')->nullable();
+            $table->string('age')->nullable();
             $table->string('height')->nullable();
             $table->tinyInteger('blood_group')->nullable();
             $table->tinyInteger('religion')->nullable();

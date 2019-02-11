@@ -8,41 +8,45 @@
     </div>
   </div>
   <div class="profile_search">
+    <?php 
+$location=DB::table('tbl_divisions')->where('status',1)->get();
+$married_status=DB::table('tbl_marital_status')->where('status',1)->get();
+$occupation=DB::table('tbl_occupation')->where('status',1)->get();
+
+
+    ?>
   	<div class="container wrap_1">
-	  <form action="#">
+	   {!! Form::open(['url' => 'search-partner-list','method'=>'post']) !!} 
 	  	<div class="search_top">
 		 <div class="inline-block">
 		  <label class="gender_1">I am looking for :</label>
 			<div class="age_box1" style="max-width: 100%; display: inline-block;">
-				<select>
+				<select name="sex" required="">
 					<option value="">* Select Gender</option>
-					<option value="Male">Bride</option>
-					<option value="Female">Groom</option>
+					<option value="1">Bride</option>
+					<option value="2">Groom</option>
 				</select>
 		   </div>
 	    </div>
         <div class="inline-block">
 		  <label class="gender_1">Located In :</label>
 			<div class="age_box1" style="max-width: 100%; display: inline-block;">
-				<select>
-					<option value="">* Select State</option>
-					<option value="Washington">Washington</option>
-					<option value="Texas">Texas</option>
-					<option value="Georgia">Georgia</option>
-					<option value="Virginia">Virginia</option>
-					<option value="Colorado">Colorado</option>
+				<select name="location" required="">
+					<option value="">* Select Location</option>
+          @foreach($location as $ll)
+					<option value="{{$ll->division_id}}">{{$ll->division_name}}</option>
+          @endforeach
                </select>
           </div>
         </div>
         <div class="inline-block">
-		  <label class="gender_1">Interested In :</label>
+		  <label class="gender_1">Occupation :</label>
 			<div class="age_box1" style="max-width: 100%; display: inline-block;">
-				<select><option value="">* Select Interest</option>
-					<option value="Sports &amp; Adventure">Sports &amp; Adventure</option>
-					<option value="Movies &amp; Entertainment">Movies &amp; Entertainment</option>
-					<option value="Arts &amp; Science">Arts &amp; Science</option>
-					<option value="Technology">Technology</option>
-					<option value="Fashion">Fashion</option>
+				<select name="occupation" required="">
+          <option value="">* Select Interest</option>
+           @foreach($occupation as $oc)
+					<option value="{{$oc->occupation_id}}">{{$oc->occupation}}</option>
+@endforeach
                </select>
           </div>
        </div>
@@ -50,25 +54,25 @@
 	 <div class="inline-block">
 	   <div class="age_box2" style="max-width: 220px;">
 	   	<label class="gender_1">Age :</label>
-	    <input class="transparent" placeholder="From:" style="width: 34%;" type="text" value="">&nbsp;-&nbsp;<input class="transparent" placeholder="To:" style="width: 34%;" type="text" value="">
+	    <input class="transparent" placeholder="From:" id="min_age" name="min_age" style="width: 34%;" type="number" min="0" required="" >&nbsp;-&nbsp;<input class="transparent" placeholder="To:" name="max_age" style="width: 34%;" type="number" id="max_age" onblur="checkAge()" max="100" required="" >
 	   </div>
 	 </div>
        <div class="inline-block">
-		  <label class="gender_1">Status :</label>
+		  <label class="gender_1">Marital Status :</label>
 			<div class="age_box1" style="max-width: 100%; display: inline-block;">
-				<select>
+				<select name="married_status" required="">
 					<option value="">* Select Status</option>
-					<option value="Single">Single</option>
-					<option value="Married">Married</option>
-					<option value="In a Relationship">In a Relationship</option>
-					<option value="It's Complicated">It's Complicated</option>
+          @foreach($married_status as $ms)
+					<option value="{{$ms->marital_status_id}}">{{$ms->marital_status}}</option>
+          @endforeach
+
 				</select>
 		  </div>
 	    </div>
 		<div class="submit inline-block">
 		   <input id="submit-btn" class="hvr-wobble-vertical" type="submit" value="Find Matches">
 		</div>
-     </form>
+     {!! Form::close() !!}
     </div>
   </div> 
 </div> 

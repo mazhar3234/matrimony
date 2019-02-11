@@ -18,20 +18,7 @@
 	height: 50px;
 }
 </style>
-<?php 
-$user_info=DB::table('users')->where('id',Session::get('user_id'))->first();
-$personal_info=DB::table('tbl_personal_information')
-->join('users', 'tbl_personal_information.user_id', '=', 'users.id')
-->where('tbl_personal_information.user_id',Session::get('user_id'))
-->select('tbl_personal_information.*', 'users.*')
-->first();
-$family_info=DB::table('tbl_family_details')->where('user_id',Session::get('user_id'))->first();
 
-$partner_info=DB::table('tbl_partner_preference')->where('user_id',Session::get('user_id'))->first();
-
-$user_photo=DB::table('tbl_photo_gallery')->where('user_id',Session::get('user_id'))->get();
-
-?>
 <div class="grid_3">
 	<div class="container">
 		<h3 class="text-center">{{$personal_info->name}} Profile</h3>
@@ -63,7 +50,7 @@ $user_photo=DB::table('tbl_photo_gallery')->where('user_id',Session::get('user_i
       <!-- @@@@@@@@@@ End Messages @@@@@@@@@@@@ -->
 				<div class="col_3">
 					<div class="col-sm-4 row_2">
-								@if(count($user_photo)>0)
+						@if(count($user_photo)>0)
 						                <ul id="image-gallery" class="gallery list-unstyled cS-hidden">
 						                	@foreach($user_photo as $up)
                     <li data-thumb="{{asset('public/user/'.$up->photo)}}"> 
@@ -75,7 +62,6 @@ $user_photo=DB::table('tbl_photo_gallery')->where('user_id',Session::get('user_i
                 @else 
                 <img style="width: 200px;height: 200px;display: block;margin: 10px auto;" src="{{asset('public/frontend_assets/images/photo.png')}}"  />
                 @endif
-
 					</div>
 
 
@@ -184,12 +170,7 @@ $user_photo=DB::table('tbl_photo_gallery')->where('user_id',Session::get('user_i
 								</tr>
 							</tbody>
 						</table>
-						@if(!Session::get('user_id'))
-						<ul class="login_details">
-							<li>Already a member? <a href="{{URL::to('login')}}">Login Now</a></li>
-							<li>If not a member? <a href="{{URL::to('register')}}">Register Now</a></li>
-						</ul>
-						@endif
+
 					</div>
 					<div class="clearfix"> </div>
 				</div>

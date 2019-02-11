@@ -1,6 +1,9 @@
 @extends('frontend.master')
 @section('content')
 <style type="text/css">
+.nav-tabs1 {
+	margin-bottom: 10px;
+}
 .form-control {
 	border-radius: 0px !important;
 	box-shadow: 0px !important;
@@ -29,6 +32,16 @@
 }
 a#profile-tab2 {
 	color: #fff;
+}
+.newsletter input[type="number"] {
+    padding: 10px 2%;
+    width: 77%;
+    margin-right: 10px;
+    font-size: 12px;
+    max-width: 96%;
+    outline: none;
+    border: 1px solid #ddd;
+    display: inline-block;
 }
 </style>
 <?php 
@@ -83,7 +96,7 @@ $occupation_c=DB::table('tbl_occupation')->where('status',1)->where('occupation_
 		</div>
 		<div class="profile">
 			<div class="col-md-8 profile_left">
-				<h2>Profile Id : MAT{{Session::get('user_id')}}</h2>
+				<h2>Profile Id : {{1000+Session::get('user_id')}}</h2>
 				      <!-- @@@@@@@@@@ Start Messages @@@@@@@@@@@@ -->
       @if(Session::has('success'))
       <div class="alert alert-success alert-icon-left" role="alert">
@@ -885,95 +898,112 @@ $occupation_c=DB::table('tbl_occupation')->where('status',1)->where('occupation_
 								</div>
 							</div>
 							<div role="tabpanel" class="tab-pane fade" id="profile2" aria-labelledby="profile-tab2">
-								{!! Form::open(['url' => 'update-photo','method'=>'post','enctype'=> 'multipart/form-data']) !!}
-								<input type="hidden" value="{{Session::get('user_id')}}" name="user_id">
-								<?php $l=1;$m=1;$n=1;
-								?>
-								@foreach($user_photo as $up)
-								<div class="col-md-4">
-									@if(!$up->photo)
-									<img style="width: 200px;height: 200px;display: block;margin: 10px auto;" src="{{asset('public/frontend_assets/images/photo.png')}}" id="image{{$l++}}" />
-									
-									@else 
-									<img style="width: 200px;height: 200px;display: block;margin: 10px auto;" src="{{asset('public/user/'.$up->photo)}}" id="image{{$l++}}" />
-									@endif
-
-								<input type="file" name="photo{{$n++}}" id="files{{$m++}}" />
-								</div>
-								@endforeach
-								<div style="margin-top: 30px;" class="col-md-4">
-									
-								<input type="submit" value="Update Photo Gallery" class="btn btn-md btn-success" name="">
-								</div>
+								
 
 
-{!! Form::close() !!}
+                            <?php
+$user_images=DB::table('tbl_photo_gallery')->where('user_id',$personal_info->id)->get();
+                            ?>
+                            <ul style="margin-bottom: 10px;" class="list-unstyled list-inline radios">
+                            	<li>
+                            		<p>Make This Photos </p>
+                            	</li>
+                            	<li>
+                            		<label for="radio-01" class="label_radio">
+                <input type="radio" name="photo_status" value="1"> Private
+              </label>
+                            	</li>
+                            	<li>
+                            		 <label for="radio-02" class="label_radio">
+                <input type="radio" name="photo_status" value="2"> Public
+              </label>
+                            	</li>
+                            </ul>
+
+                            </p>
+          
+                            <div id="new_result" class="row">
+                             @foreach($user_images as $pii)
+                              <div class="col-md-4">
+                               
+                    <img style="width: 100%;height: 150px;margin-bottom: 5px;" src="{{asset('public/user/'.$pii->photo)}}">
+                    <ul style="display: inline-flex; padding-left: 15px;" class="list-unstyled list-inline">
+                                  <li>
+                                  	<input type="hidden" id="user_id" value="{{Session::get('user_id')}}">
+                                    <a href="javascript:viod(0);" onclick="delete_user_image(<?php echo $pii->photo_id; ?>)" class="btn btn-sm btn-danger">Delete</a>
+                               
+                                  </li>
+                
+                                </ul>
+                            
+                              </div>
+                             
+                            @endforeach
+                            </div>
+                            {!! Form::open(['url' => 'update-photo','method'=>'post','enctype' => 'multipart/form-data']) !!} 
+                            <input type="hidden" name="user_id" value="{{Session::get('user_id')}}">
+                            <div style="margin-top: 10px;" class="row input_fields_wrap">
+                            	  <div class="col-md-6">
+                              <div class="col-md-9">
+                                <input type="file" class="form-control" name="user_image[]">
+                              </div>
+                              <div class="col-md-3">
+                                 <a href="javascript:viod(0)" class="btn btn-sm btn-success add_field_button">ADD MORE</a>
+                              </div>
+                            </div>
+
+                            </div>
+                            <div class="row">
+                            	<div class="col-md-6">
+                            		<input type="submit" value="Update Photo" class="btn btn-md btn-success" name="">
+                            	</div>
+                            </div>
+
+                            {!! Form::close() !!}
+
+                           
+
+
+
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="col-md-4 profile_right">
-				<div class="newsletter">
-					<form>
-						<input type="text" name="ne" size="30" required="" placeholder="Enter Profile ID :">
+			<div class="newsletter">
+					{!! Form::open(['url' => 'search-profile','method'=>'post']) !!}
+						<input type="number" name="profile_id" size="30" required="" placeholder="Enter Profile ID :">
 						<input type="submit" value="Go">
-					</form>
+					{!! Form::close() !!}
 				</div>
 				<div class="view_profile">
-					<h3>View Similar Profiles</h3>
+					<h3>Recent Created Profile</h3>
+					@foreach($recent_user as $ru)
 					<ul class="profile_item">
 						<a href="#">
 							<li class="profile_item-img">
 								<img src="images/p5.jpg" class="img-responsive" alt=""/>
 							</li>
 							<li class="profile_item-desc">
-								<h4>2458741</h4>
-								<p>29 Yrs, 5Ft 5in Christian</p>
-								<h5>View Full Profile</h5>
+								<h4>MAT{{$ru->id}}</h4>
+								<p>
+									<?php
+
+													$birthDate = date("Y-m-d", strtotime($ru->dob) );
+													$today = date("Y-m-d");
+													$diff = date_diff(date_create($birthDate), date_create($today));
+													echo $age=$diff->format('%y Year');
+													?>
+								</p>
+								<a href="{{URL::to('profile/'.$ru->id)}}">View Full Profile</a>
+								<!-- <h5>View Full Profile</h5> -->
 							</li>
 							<div class="clearfix"> </div>
 						</a>
 					</ul>
-					<ul class="profile_item">
-						<a href="#">
-							<li class="profile_item-img">
-								<img src="images/p6.jpg" class="img-responsive" alt=""/>
-							</li>
-							<li class="profile_item-desc">
-								<h4>2458741</h4>
-								<p>29 Yrs, 5Ft 5in Christian</p>
-								<h5>View Full Profile</h5>
-							</li>
-							<div class="clearfix"> </div>
-						</a>
-					</ul>
-					<ul class="profile_item">
-						<a href="#">
-							<li class="profile_item-img">
-								<img src="images/p7.jpg" class="img-responsive" alt=""/>
-							</li>
-							<li class="profile_item-desc">
-								<h4>2458741</h4>
-								<p>29 Yrs, 5Ft 5in Christian</p>
-								<h5>View Full Profile</h5>
-							</li>
-							<div class="clearfix"> </div>
-						</a>
-					</ul>
-					<ul class="profile_item">
-						<a href="#">
-							<li class="profile_item-img">
-								<img src="images/p8.jpg" class="img-responsive" alt=""/>
-							</li>
-							<li class="profile_item-desc">
-								<h4>2458741</h4>
-								<p>29 Yrs, 5Ft 5in Christian</p>
-								<h5>View Full Profile</h5>
-							</li>
-							<div class="clearfix"> </div>
-						</a>
-					</ul>
+					@endforeach
+
 				</div>
 
 			</div>

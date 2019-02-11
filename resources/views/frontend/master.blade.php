@@ -10,6 +10,7 @@
 
 
 <!-- Custom Theme files -->
+<link href="{{asset('public/frontend_assets/css/lightslider.css')}}" rel='stylesheet' type='text/css' />
 <link href="{{asset('public/frontend_assets/css/style.css')}}" rel='stylesheet' type='text/css' />
 
 	    <!-- Include Bootstrap Datepicker -->
@@ -131,17 +132,17 @@ We are providing the most secure, trusted and reliable platform for all the memb
     			<h4>Help & Support</h4>
     			<ul class="footer_links">
     				<li><a href="#">24x7 Live help</a></li>
-    				<li><a href="contact.html">Contact us</a></li>
+    				<li><a href="{{URL::to('contact-us')}}">Contact us</a></li>
     				<li><a href="#">Feedback</a></li>
-    				<li><a href="faq.html">FAQs</a></li>
+    				<li><a href="#">FAQs</a></li>
     			</ul>
     		</div>
     		<div class="col-md-2 col_2">
     			<h4>Quick Links</h4>
     			<ul class="footer_links">
-    				<li><a href="privacy.html">Privacy Policy</a></li>
-    				<li><a href="terms.html">Terms and Conditions</a></li>
-    				<li><a href="services.html">Services</a></li>
+    				<li><a href="#">Privacy Policy</a></li>
+    				<li><a href="#">Terms and Conditions</a></li>
+    				<li><a href="#">Services</a></li>
     			</ul>
     		</div>
     		<div class="col-md-2 col_2">
@@ -183,6 +184,24 @@ We are providing the most secure, trusted and reliable platform for all the memb
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="{{asset('public/frontend_assets/js/jquery.min.js')}}"></script>
 <script src="{{asset('public/frontend_assets/js/bootstrap.min.js')}}"></script>
+<script src="{{asset('public/frontend_assets/js/lightslider.js')}}"></script>
+    <script>
+         $(document).ready(function() {
+
+            $('#image-gallery').lightSlider({
+                gallery:true,
+                item:1,
+                thumbItem:5,
+                slideMargin: 0,
+                speed:800,
+                auto:true,
+                loop:true,
+                onSliderLoad: function() {
+                    $('#image-gallery').removeClass('cS-hidden');
+                }  
+            });
+        });
+    </script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
 	   <script type="text/javascript" src="{{asset('public/frontend_assets/js/jquery.flexisel.js')}}"></script>
 	    <script type="text/javascript">
@@ -309,6 +328,48 @@ We are providing the most secure, trusted and reliable platform for all the memb
     reader.readAsDataURL(this.files[0]);
 };
 </script>
+            <script type="text/javascript">
+              $(document).ready(function() {
+    var max_fields      = 10; //maximum input boxes allowed
+    var wrapper         = $(".input_fields_wrap"); //Fields wrapper
+    var add_button      = $(".add_field_button"); //Add button ID
+    
+    var x = 1; //initlal text box count
+    $(add_button).click(function(e){ //on add input button click
+        e.preventDefault();
+        if(x < max_fields){ //max input box allowed
+            x++; //text box increment
+            $(wrapper).append('<div style="margin:7px 0px;;display:inline-block;" class="col-md-6"> <input style="display:inline-block;" type="file" class="form-control col-md-9" name="user_image[]"/><a style="font-size:12px;text-decoration:none;" href="#" class="remove_field btn btn-sm btn-danger col-md-3">REMOVE</a></div>'); //add input box
+        }
+    });
+    
+    $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
+        e.preventDefault(); $(this).parent('div').remove(); x--;
+    })
+});
+
+                function delete_user_image(id){
+    // alert(id);
+    // alert($("#user_id").val());
+    var user_id=$("#user_id").val();
+          $.ajax({
+    url: "{{URL::to('delete-user-image')}}",
+    type: "get",
+    data: {id:id,user_id:user_id},
+    success: function(data){
+
+$("#new_result").html(data);
+    }
+}); 
+  }
+  function checkAge(){
+     var min_age=$("#min_age").val();
+     var max_age=$("#max_age").val();
+     if (max_age<min_age) {
+        alert('Max Age Must Be Lower Than Min Age');
+     }
+  }
+            </script>
 
 </body>
 </html>	
