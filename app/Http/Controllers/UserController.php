@@ -196,6 +196,18 @@ class UserController extends Controller
 
 $image_count=count($request->file('user_image'));
 $user_image=$request->file('user_image');
+if ($request->permission) {
+$result3=  DB::table('photo_permission')->where('user_id',$request->user_id)->first();
+if ($result3) {
+DB::table('photo_permission')->where('user_id',$request->user_id)->update(['permission'=>$request->permission]);
+}else {
+	$aa=array();
+	$aa['user_id']=$request->user_id;
+	$aa['permission']=$request->permission;
+DB::table('photo_permission')->insert($aa);	
+}
+}
+if($user_image){
  for ($i=0; $i <= $image_count-1 ; $i++) { 
           $file_size   =$user_image[$i]->getClientSize();
         $name        = str_random(20);
@@ -225,6 +237,9 @@ $user_image=$request->file('user_image');
 			}else {
 				return Redirect::to('edit-profile/'.$request->user_id)->with('error','There is a error Updating Data!!');
 			}
+		}else {
+			return Redirect::to('edit-profile/'.$request->user_id)->with('success','Profile Photo Updated Successfully!!');
+		}
 	}
 
 	public function profileById($id){
@@ -262,6 +277,14 @@ $user_photo=DB::table('tbl_photo_gallery')->where('user_id',$id)->get();
         $userimages=DB::table('tbl_photo_gallery')->where('photo_id',$id)->delete();
         $result=DB::table('tbl_photo_gallery')->where('user_id',$user_id)->get();
         return view('frontend.pages.new_result')->with('result',$result);
+	}
+	public function update_password(Request $request){
+		$result2 = DB::table('users')->where('id',$request->user_id)->update(['password'=>md5($request->password)]);
+		if ($result2) {
+		return Redirect::to('logout')->with('exception','Login Again To Continue!!');	
+		}else {
+			return Redirect::to('edit-profile/'.$request->user_id)->with('error','We Can Not Update The Password Now!!');
+		}
 	}
 	/*--------------------- Logout ------------------*/
 

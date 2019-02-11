@@ -38,31 +38,40 @@
 				</div>
 				<div class="view_profile">
 					<h3>Recent Created Profile</h3>
-					@foreach($recent_user as $ru)
-					<ul class="profile_item">
-						<a href="#">
-							<li class="profile_item-img">
-								<img src="images/p5.jpg" class="img-responsive" alt=""/>
-							</li>
-							<li class="profile_item-desc">
-								<h4>MAT{{$ru->id}}</h4>
-								<p>
-									<?php
+							@foreach($recent_user as $ru)
+		<ul class="profile_item">
+			<a href="#">
+				<li class="profile_item-img">
+					@if(count($user_photo)>0)
+					<img  class="img-responsive" src="{{asset('public/user/'.$user_photo[0]->photo)}}" />
+					@else 
+					<img class="img-responsive" src="{{asset('public/frontend_assets/images/photo.png')}}"  />
+					@endif
+				</li>
+				<li class="profile_item-desc">
+					<h4>{{1000+$ru->id}}</h4>
 
-													$birthDate = date("Y-m-d", strtotime($ru->dob) );
-													$today = date("Y-m-d");
-													$diff = date_diff(date_create($birthDate), date_create($today));
-													echo $age=$diff->format('%y Year');
-													?>
-								</p>
-								<a href="{{URL::to('profile/'.$ru->id)}}">View Full Profile</a>
-								<!-- <h5>View Full Profile</h5> -->
-							</li>
-							<div class="clearfix"> </div>
-						</a>
-					</ul>
-					@endforeach
+					 	@if($ru->sex=='1')
+					<p>Male</p>
+					@else 
+					<p>Female</p>
+					@endif
+					<p>
+						<?php
 
+						$birthDate = date("Y-m-d", strtotime($ru->dob) );
+						$today = date("Y-m-d");
+						$diff = date_diff(date_create($birthDate), date_create($today));
+						echo $age=$diff->format('%y Year');
+						?>
+					</p>
+					<a href="{{URL::to('profile/'.$ru->id)}}">View Full Profile</a>
+					<!-- <h5>View Full Profile</h5> -->
+				</li>
+				<div class="clearfix"> </div>
+			</a>
+		</ul>
+		@endforeach
 				</div>
 
 			</div>

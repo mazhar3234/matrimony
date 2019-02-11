@@ -32,4 +32,25 @@ Route::post('update-profile', 'UserController@update_profile');
 Route::post('update-family-details', 'UserController@update_family_details');
 Route::post('update-partner-preference', 'UserController@update_partner_preference');
 Route::post('update-photo', 'UserController@update_photo');
+Route::post('update-password', 'UserController@update_password');
 Route::get('delete-user-image', 'UserController@delete_user_image');
+
+
+//// Admin Routes
+Route::get('matrimony-admin', 'AdminController@login');
+Route::post('admin-login-check', 'AdminController@login_check');
+Route::get('dashboard', 'AdminController@dashboard');
+Route::get('admin-logout', 'AdminController@admin_logout');
+/*-------- User Controller -----------------*/
+Route::get('add-user', 'AdminUserController@addUser');
+Route::post('save-user', 'AdminUserController@saveUser');
+Route::get('manage-user', 'AdminUserController@manageUser');
+Route::get('unpublish-user-status/{id}', 'AdminUserController@unpublishUser');
+Route::get('publish-user-status/{id}', 'AdminUserController@publishUser');
+Route::get('delete-user/{id}', 'AdminUserController@deleteUser');
+Route::get('edit-user/{id}', 'AdminUserController@editUser');
+Route::get('change-user-info', 'AdminUserController@changeUserInfo');
+Route::post('update-user', 'AdminUserController@updateUser');
+//////// UserRequest Controller
+Route::get('user-request', 'UserRequestController@user_request');
+Route::get('approve-user-request/{id}', 'UserRequestController@user_request_approve');

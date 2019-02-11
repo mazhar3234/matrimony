@@ -16,18 +16,22 @@
     </section>
     <section class="login-content">
       <div class="logo">
-        <h1>Vali</h1>
+        <h1>Matrimony Admin</h1>
       </div>
       <div class="login-box">
-        <form class="login-form" action="index.html">
+  <h5 style="color: red;font-size: 16px;" class="text-center msg"><?php  if(Session::get('error')){
+    echo Session::get('error');
+    Session::put('error','');
+  } ?></h5>
+        {!! Form::open(['url' => 'admin-login-check','method'=>'post','class'=>'login-form']) !!} 
           <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>SIGN IN</h3>
           <div class="form-group">
-            <label class="control-label">USERNAME</label>
-            <input class="form-control" type="text" placeholder="Email" autofocus>
+            <label class="control-label">EMAIL</label>
+            <input class="form-control" type="email" placeholder="Email"  name="email" required="" autofocus>
           </div>
           <div class="form-group">
             <label class="control-label">PASSWORD</label>
-            <input class="form-control" type="password" placeholder="Password">
+            <input class="form-control" type="password" name="password" required="" placeholder="Password">
           </div>
 <!--           <div class="form-group">
             <div class="utility">
@@ -40,9 +44,9 @@
             </div>
           </div> -->
           <div class="form-group btn-container">
-            <button class="btn btn-primary btn-block"><i class="fa fa-sign-in fa-lg fa-fw"></i>SIGN IN</button>
+            <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-sign-in fa-lg fa-fw"></i>SIGN IN</button>
           </div>
-        </form>
+          {!! Form::close() !!}
 <!--         <form class="forget-form" action="index.html">
           <h3 class="login-head"><i class="fa fa-lg fa-fw fa-lock"></i>Forgot Password ?</h3>
           <div class="form-group">
@@ -72,5 +76,10 @@
       	return false;
       });
     </script> -->
+    <script type="text/javascript">
+    $('.msg').delay(3000).fadeOut(1000);
+
+
+</script>
   </body>
 </html>

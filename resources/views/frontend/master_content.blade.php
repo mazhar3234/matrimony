@@ -12,7 +12,7 @@
 $location=DB::table('tbl_divisions')->where('status',1)->get();
 $married_status=DB::table('tbl_marital_status')->where('status',1)->get();
 $occupation=DB::table('tbl_occupation')->where('status',1)->get();
-
+$personal_info=DB::table('users')->where('verified',1)->where('role',2)->where('status',1)->get();
 
     ?>
   	<div class="container wrap_1">
@@ -125,36 +125,22 @@ $occupation=DB::table('tbl_occupation')->where('status',1)->get();
 			<span class="grey-line"></span>
         </div>
         <ul id="flexiselDemo3">
-	      <li><div class="col_1"><a href="view_profile.html">
+	<!--       <li><div class="col_1"><a href="view_profile.html">
 			<img style="  -webkit-filter: blur(5px);filter: blur(5px);" src="{{asset('public/frontend_assets/images/1.jpg')}}" alt="" class="hover-animation image-zoom-in img-responsive"/>
              
              <h3><span class="m_3">Profile ID : MI-387412</span><br>28, Christian, Australia<br>Corporate</h3></a></div>
-          </li>
+          </li> -->
+          @foreach($personal_info as $pp)
 		  <li><div class="col_1"><a href="view_profile.html">
 			<img src="{{asset('public/frontend_assets/images/2.jpg')}}" alt="" class="hover-animation image-zoom-in img-responsive"/>
              
-             <h3><span class="m_3">Profile ID : MI-387412</span><br>28, Christian, Australia<br>Corporate</h3></a></div>
+             <h3><span class="m_3">Profile ID : {{1000+$pp->id}}</span><br><?php $birthDate = date("Y-m-d", strtotime($pp->dob) );
+                      $today = date("Y-m-d");
+                      $diff = date_diff(date_create($birthDate), date_create($today));
+                      echo $age=$diff->format('%y Year');?>, {{$pp->name}}, Australia<br>Corporate</h3></a></div>
           </li>
-		  <li><div class="col_1"><a href="view_profile.html">
-			<img src="{{asset('public/frontend_assets/images/3.jpg')}}" alt="" class="hover-animation image-zoom-in img-responsive"/>
-            
-             <h3><span class="m_3">Profile ID : MI-387412</span><br>28, Christian, Australia<br>Corporate</h3></a></div>
-          </li>
-		  <li><div class="col_1"><a href="view_profile.html">
-			<img src="{{asset('public/frontend_assets/images/4.jpg')}}" alt="" class="hover-animation image-zoom-in img-responsive"/>
-            
-             <h3><span class="m_3">Profile ID : MI-387412</span><br>28, Christian, Australia<br>Corporate</h3></a></div>
-          </li>
-		  <li><div class="col_1"><a href="view_profile.html">
-			<img src="{{asset('public/frontend_assets/images/3.jpg')}}" alt="" class="hover-animation image-zoom-in img-responsive"/>
-            
-             <h3><span class="m_3">Profile ID : MI-387412</span><br>28, Christian, Australia<br>Corporate</h3></a></div>
-          </li>
-		  <li><div class="col_1"><a href="view_profile.html">
-			<img src="{{asset('public/frontend_assets/images/2.jpg')}}" alt="" class="hover-animation image-zoom-in img-responsive"/>
-            
-             <h3><span class="m_3">Profile ID : MI-387412</span><br>28, Christian, Australia<br>Corporate</h3></a></div>
-          </li>
+          @endforeach
+
 	    </ul>
 
     </div>

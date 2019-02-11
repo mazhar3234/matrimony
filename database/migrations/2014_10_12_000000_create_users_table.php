@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('last_login')->nullable();
             $table->tinyInteger('verified')->default('0')->comment('0=not verified,1=verified');
             $table->timestamp('email_verified_at')->nullable();
+            $table->tinyInteger('status')->default(1);
             $table->rememberToken();
             $table->timestamps();
         });
